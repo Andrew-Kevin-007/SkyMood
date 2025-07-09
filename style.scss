@@ -1,0 +1,260 @@
+$font: -apple-system, BlinkMacSystemFont, "San Francisco", "Helvetica Neue", "Segoe UI", sans-serif;
+
+body {
+  margin: 0;
+  background: #1a1a1a;
+  font-family: $font;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  height: auto;
+  padding-bottom: 5rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 100%;
+}
+
+.mac-window {
+  width: 720px;
+  max-width: 90%;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(18px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 30px 50px rgba(0, 0, 0, 0.5);
+  margin-top: 4rem;
+}
+
+.title-bar {
+  background: rgba(255, 255, 255, 0.06);
+  height: 38px;
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: relative;
+}
+
+.traffic-lights {
+  display: flex;
+  gap: 8px;
+
+  span {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    display: block;
+  }
+
+  .red { background: #ff5f56; }
+  .yellow { background: #ffbd2e; }
+  .green { background: #27c93f; }
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.9rem;
+  color: #ccc;
+  letter-spacing: 0.4px;
+}
+
+.window-content {
+  padding: 3rem;
+  color: white;
+  text-align: center;
+
+  .subtitle {
+    font-size: 1.8rem;
+    color: #ccc;
+    margin-bottom: 2rem;
+  }
+
+  input {
+    width: 100%;
+    padding: 14px;
+    font-size: 1rem;
+    border: 1px solid #444;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.06);
+    color: white;
+    margin-bottom: 1.5rem;
+    outline: none;
+
+    &::placeholder {
+      color: #aaa;
+    }
+  }
+
+  button {
+    background: #fff;
+    color: #000;
+    font-weight: 600;
+    font-size: 1rem;
+    padding: 10px 20px;
+    border-radius: 12px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+
+    &:hover {
+      background: #e5e5e5;
+    }
+
+    &:active {
+      background: #ccc;
+    }
+  }
+
+  .mood-list {
+    margin-top: 2rem;
+    text-align: left;
+    max-height: 180px;
+    overflow-y: auto;
+    font-size: 1.1rem;
+
+    .mood-item {
+      padding: 8px 0;
+      border-bottom: 1px solid #333;
+      color: #eee;
+      animation: fadeInUp 0.3s ease;
+    }
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.timeline-section {
+  width: 100%;
+  max-width: 700px;
+  padding: 2rem 1rem 4rem;
+}
+
+.timeline-heading {
+  color: white;
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.mood-card {
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 1.25rem;
+  padding: 1.5rem 2rem;
+  margin-bottom: 1rem;
+  color: white;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 10px 30px rgba(255, 255, 255, 0.04);
+  transition: transform 0.3s ease, background 0.3s ease;
+  cursor: default;
+  font-family: $font;
+  width: 90%;
+  max-width: 600px;
+  margin-inline: auto;
+}
+
+.mood-card:hover {
+  transform: scale(1.015);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+.mood-word {
+  font-size: 2rem;
+  font-weight: 600;
+  letter-spacing: -0.03rem;
+}
+
+.mood-meta {
+  font-size: 0.875rem;
+  margin-top: 0.5rem;
+  color: #aaa;
+  font-weight: 400;
+}
+/* 🔽 Phones (max-width: 600px) */
+@media screen and (max-width: 600px) {
+  .mac-window {
+    width: 95%;
+    margin-top: 2rem;
+  }
+
+  .window-content {
+    padding: 2rem 1rem;
+
+    .subtitle {
+      font-size: 1.5rem;
+    }
+
+    input {
+      font-size: 0.95rem;
+      padding: 12px;
+    }
+
+    button {
+      width: 100%;
+      font-size: 0.95rem;
+      padding: 12px;
+    }
+
+    .mood-list {
+      font-size: 1rem;
+    }
+  }
+
+  .mood-card {
+    width: 95%;
+    padding: 1.25rem 1.5rem;
+
+    .mood-word {
+      font-size: 1.5rem;
+    }
+
+    .mood-meta {
+      font-size: 0.75rem;
+    }
+  }
+
+  .timeline-heading {
+    font-size: 1.6rem;
+  }
+}
+
+/* 🔽 Tablets (600px to 900px) */
+@media screen and (max-width: 900px) and (min-width: 601px) {
+  .mac-window {
+    width: 95%;
+  }
+
+  .window-content {
+    padding: 2.5rem 2rem;
+  }
+
+  .mood-card {
+    width: 90%;
+
+    .mood-word {
+      font-size: 1.75rem;
+    }
+
+    .mood-meta {
+      font-size: 0.8rem;
+    }
+  }
+}

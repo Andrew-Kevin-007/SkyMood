@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SkyMood ☁️</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    html, body {
+      scroll-behavior: smooth;
+    }
+  </style>
+</head>
+<body>
+  <audio id="bgMusic" autoplay loop>
+    <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_3e2cfa0375.mp3?filename=calm-relaxing-background-110397.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="container">
+    <div class="mac-window">
+      <div class="title-bar">
+        <div class="traffic-lights">
+          <span class="red"></span>
+          <span class="yellow"></span>
+          <span class="green"></span>
+        </div>
+        <div class="title">SkyMood</div>
+      </div>
+
+      <div class="window-content">
+        <p class="subtitle">How do you feel right now?</p>
+        <input type="text" id="moodInput" placeholder="e.g. peaceful" />
+        <button id="submitMood">Reflect</button>
+        <div id="moodList" class="mood-list"></div>
+      </div>
+    </div>
+
+    <section id="myMoods" class="timeline-section">
+      <h2 class="timeline-heading">My Moods</h2>
+      <div id="timeline"></div>
+    </section>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      getDocs,
+      query,
+      orderBy,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyAhiQPgAhamTufiLXI_cXdcjHZ2K7k-HKE",
+      authDomain: "skymood-bc7d2.firebaseapp.com",
+      projectId: "skymood-bc7d2",
+      storageBucket: "skymood-bc7d2.appspot.com",
+      messagingSenderId: "703317350056",
+      appId: "1:703317350056:web:08ab7d726d266cd0c6549d"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+
+    const moodInput = document.getElementById("moodInput");
+    const submitBtn = document.getElementById("submitMood");
+    const moodList = document.getElementById("moodList");
+    const timeline = document.getElementById("timeline");
+
+    submitBtn.addEventListener("click", async () => {
+      const mood = moodInput.value.trim();
+      if (!mood) return;
+
+      await addDoc(collection(db, "moods"), {
+        mood,
+        timestamp: serverTimestamp()
+      });
+      moodInput.value = "";
+      loadMoods();
+      document.getElementById("myMoods").scrollIntoView({ behavior: "smooth" });
+    });
+
+    function formatDate(date) {
+      return date.toLocaleString("en-US", {
+        weekday: "long",
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true
+      });
+    }
+
+    async function loadMoods() {
+      moodList.innerHTML = "";
+      timeline.innerHTML = "";
+      const q = query(collection(db, "moods"), orderBy("timestamp", "desc"));
+      const snapshot = await getDocs(q);
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        const mood = data.mood;
+        const timestamp = data.timestamp?.toDate?.();
+
+        const div = document.createElement("div");
+        div.className = "mood-item";
+        div.textContent = mood;
+        moodList.appendChild(div);
+
+        if (timestamp) {
+          const card = document.createElement("div");
+          card.className = "mood-card";
+
+          const moodWord = document.createElement("div");
+          moodWord.className = "mood-word";
+          moodWord.textContent = mood;
+
+          const moodMeta = document.createElement("div");
+          moodMeta.className = "mood-meta";
+          moodMeta.textContent = formatDate(timestamp);
+
+          card.appendChild(moodWord);
+          card.appendChild(moodMeta);
+          timeline.appendChild(card);
+        }
+      });
+    }
+
+    loadMoods();
+  </script>
+</body>
+</html>
